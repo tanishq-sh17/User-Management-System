@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: User-Contact-Manager
+
+  datasource:
+      url: jdbc:mysql://localhost:3306/book_author_db1
+      username: root
+      password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+server:
+  port: 8080
+
