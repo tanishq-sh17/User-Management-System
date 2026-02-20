@@ -14,7 +14,7 @@ public record UserRequestDto(
 
         String about,
         @NotBlank(message = "Password can't be empty")
-        @Size(min = 8, max = 16)
+        @Size(min = 8, max = 20)
         String password
 )
 {
