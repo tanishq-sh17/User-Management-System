@@ -19,7 +19,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_title")
+    @Column(name = "user_name")
     private String name;
 
     @Column(name = "user_email")
