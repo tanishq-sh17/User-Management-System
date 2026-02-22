@@ -1,6 +1,7 @@
 package com.springtan.service;
 
 import com.springtan.dto.UserRequestDto;
+import com.springtan.dto.UserResponseDto;
 import com.springtan.entity.User;
 import com.springtan.exception.UserNotFoundException;
 import com.springtan.mapper.UserMapper;
@@ -26,23 +27,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User saveUser(UserRequestDto userRequestDto){
+    public UserResponseDto saveUser(UserRequestDto userRequestDto){
         User user = userMapper.toEntity(userRequestDto);
-        return userRepository.save(user);
+        return userMapper.toResponseDto(userRepository.save(user));
     }
 
     @Override
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponseDto> getAllUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toResponseDto)
+                .toList();
     }
 
     @Override
-    public User getUserById(Long id){
+    public UserResponseDto getUserById(Long id){
         return userRepository
                 .findById(id)
+                .map(userMapper::toResponseDto)
                 .orElseThrow(() -> {
                         log.error("User not found with id={}", id);
-                        return new UserNotFoundException(AppConstants.USER_NOT_FOUND);
+                        return new UserNotFoundException(
+                                AppConstants.USER_NOT_FOUND);
                 });
     }
 
@@ -52,7 +58,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                         log.error("User not found with id={} while deleting the user", id);
-                        return new UserNotFoundException(AppConstants.USER_NOT_FOUND);
+                        return new UserNotFoundException(
+                                AppConstants.USER_NOT_FOUND);
                 });
 
         userRepository.delete(user);
@@ -60,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(UserRequestDto userRequestDto, Long id){
+    public UserResponseDto updateUser(UserRequestDto userRequestDto, Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("User not found with id={} while updating the user", id);
@@ -69,7 +76,9 @@ public class UserServiceImpl implements UserService {
                 });
 
         userMapper.updateEntityFromRequestDto(userRequestDto, user);
-        return userRepository.save(user);
+        return userMapper.toResponseDto(
+                userRepository.save(user)
+        );
 
     }
 }

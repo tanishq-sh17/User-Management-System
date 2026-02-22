@@ -1,19 +1,20 @@
 package com.springtan.service;
 
 import com.springtan.dto.ContactRequestDto;
+import com.springtan.dto.ContactResponseDto;
 import com.springtan.entity.Contact;
 
 import java.util.List;
 
 public interface ContactService {
 
-    Contact saveContact(Long userId, ContactRequestDto contactRequestDto);
+    ContactResponseDto saveContact(Long userId, ContactRequestDto contactRequestDto);
 
-    List<Contact> getAllContacts();
+    List<ContactResponseDto> getAllContacts();
 
-    Contact getContactById(Long id);
+    ContactResponseDto getContactById(Long id);
 
     void deleteContact(Long id);
 
-    Contact updateContact(ContactRequestDto contactRequestDto, Long id);
+    ContactResponseDto updateContact(ContactRequestDto contactRequestDto, Long id);
 }

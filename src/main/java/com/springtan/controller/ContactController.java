@@ -2,8 +2,6 @@ package com.springtan.controller;
 
 import com.springtan.dto.ContactRequestDto;
 import com.springtan.dto.ContactResponseDto;
-import com.springtan.entity.Contact;
-import com.springtan.mapper.ContactMapper;
 import com.springtan.service.ContactService;
 import com.springtan.util.AppConstants;
 import jakarta.validation.Valid;
@@ -18,11 +16,9 @@ import java.util.List;
 public class ContactController {
 
     private final ContactService contactService;
-    private final ContactMapper contactMapper;
 
-    public ContactController(ContactService contactService, ContactMapper contactMapper) {
+    public ContactController(ContactService contactService) {
         this.contactService = contactService;
-        this.contactMapper = contactMapper;
     }
 
     @PostMapping("/users/{userId}/contacts")
@@ -31,8 +27,8 @@ public class ContactController {
             @Valid @RequestBody ContactRequestDto contactRequestDto
     )
     {
-        Contact contact = contactService.saveContact(userId, contactRequestDto);
-        ContactResponseDto contactResponseDto = contactMapper.toResposeDto(contact);
+        ContactResponseDto contactResponseDto =
+                contactService.saveContact(userId, contactRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(contactResponseDto);
     }
 
@@ -42,16 +38,13 @@ public class ContactController {
                 = contactService
                     .getAllContacts()
                     .stream()
-                    .map(contactMapper::toResposeDto)
                     .toList();
         return ResponseEntity.ok(contactResponseDtoList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactResponseDto> getContactById(@PathVariable Long id){
-        return ResponseEntity.ok(
-                contactMapper.toResposeDto(contactService.getContactById(id))
-        );
+        return ResponseEntity.ok(contactService.getContactById(id));
     }
 
     @DeleteMapping("/{id}")
@@ -66,8 +59,8 @@ public class ContactController {
             @PathVariable Long id
     )
     {
-        Contact contact = contactService.updateContact(contactRequestDto, id);
-        ContactResponseDto contactResponseDto = contactMapper.toResposeDto(contact);
+        ContactResponseDto contactResponseDto =
+                contactService.updateContact(contactRequestDto, id);
         return ResponseEntity.ok(contactResponseDto);
     }
 }

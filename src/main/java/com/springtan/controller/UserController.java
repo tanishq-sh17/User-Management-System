@@ -2,7 +2,6 @@ package com.springtan.controller;
 
 import com.springtan.dto.UserRequestDto;
 import com.springtan.dto.UserResponseDto;
-import com.springtan.entity.User;
 import com.springtan.mapper.UserMapper;
 import com.springtan.service.UserService;
 import com.springtan.util.AppConstants;
@@ -27,8 +26,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDto> addUser(@Valid @RequestBody UserRequestDto userRequestDto){
-        User user = userService.saveUser(userRequestDto);
-        UserResponseDto userResponseDto = userMapper.toResponseDto(user);
+        UserResponseDto userResponseDto = userService.saveUser(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
 
@@ -38,7 +36,6 @@ public class UserController {
                 userService
                         .getAllUsers()
                         .stream()
-                        .map(userMapper::toResponseDto)
                         .toList();
 
         return ResponseEntity.ok(userResponseDtoList);
@@ -46,10 +43,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok(
-                userMapper.toResponseDto(userService.getUserById(id)
-                )
-        );
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @DeleteMapping("/{id}")
@@ -67,8 +61,7 @@ public class UserController {
             @PathVariable Long id
     )
     {
-        User user = userService.updateUser(userRequestDto, id);
-        UserResponseDto userResponseDto = userMapper.toResponseDto(user);
+        UserResponseDto userResponseDto = userService.updateUser(userRequestDto, id);
         return ResponseEntity.ok(userResponseDto);
 
     }

@@ -1,19 +1,19 @@
 package com.springtan.service;
 
 import com.springtan.dto.UserRequestDto;
-import com.springtan.entity.User;
+import com.springtan.dto.UserResponseDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    User saveUser(UserRequestDto userRequestDto);
+    UserResponseDto saveUser(UserRequestDto userRequestDto);
 
-    List<User> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
-    User getUserById(Long id);
+    UserResponseDto getUserById(Long id);
 
     void deleteUser(Long id);
 
-    User updateUser(UserRequestDto userRequestDto, Long id);
+    UserResponseDto updateUser(UserRequestDto userRequestDto, Long id);
 }
