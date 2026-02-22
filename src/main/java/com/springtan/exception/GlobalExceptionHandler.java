@@ -23,6 +23,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(userNotFound, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ContactNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleContactNotFoundException(ContactNotFoundException exp){
+
+        ErrorResponse contactNotFound = ErrorResponse.builder()
+                .localDateTime(LocalDateTime.now())
+                .message(exp.getMessage())
+                .build();
+
+        return new ResponseEntity<>(contactNotFound, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<MethodArgumentErrorResponse>> handleMethodArgumentException(MethodArgumentNotValidException ex){
 

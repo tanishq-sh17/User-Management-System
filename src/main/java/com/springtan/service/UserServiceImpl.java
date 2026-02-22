@@ -40,11 +40,10 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id){
         return userRepository
                 .findById(id)
-                .orElseThrow(() ->
-                        new UserNotFoundException(
-                                AppConstants.USER_NOT_FOUND
-                        )
-                );
+                .orElseThrow(() -> {
+                        log.error("User not found with id={}", id);
+                        return new UserNotFoundException(AppConstants.USER_NOT_FOUND);
+                });
     }
 
     @Override

@@ -3,7 +3,7 @@ spring:
     name: User-Contact-Manager
 
   datasource:
-      url: jdbc:mysql://localhost:3306/book_author_db1
+      url: jdbc:mysql://localhost:3306/user_contact_manager_db1
       username: root
       password: root
 

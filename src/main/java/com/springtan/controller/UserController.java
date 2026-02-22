@@ -4,7 +4,8 @@ import com.springtan.dto.UserRequestDto;
 import com.springtan.dto.UserResponseDto;
 import com.springtan.entity.User;
 import com.springtan.mapper.UserMapper;
-import com.springtan.service.UserServiceImpl;
+import com.springtan.service.UserService;
+import com.springtan.util.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,17 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
     private final UserMapper userMapper;
 
-    public UserController(UserServiceImpl userServiceImpl, UserMapper userMapper) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
         this.userMapper = userMapper;
     }
 
     @PostMapping
     public ResponseEntity<UserResponseDto> addUser(@Valid @RequestBody UserRequestDto userRequestDto){
-        User user = userServiceImpl.saveUser(userRequestDto);
+        User user = userService.saveUser(userRequestDto);
         UserResponseDto userResponseDto = userMapper.toResponseDto(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
@@ -34,7 +35,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers(){
         List<UserResponseDto> userResponseDtoList =
-                userServiceImpl
+                userService
                         .getAllUsers()
                         .stream()
                         .map(userMapper::toResponseDto)
@@ -46,16 +47,18 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id){
         return ResponseEntity.ok(
-                userMapper.toResponseDto(userServiceImpl.getUserById(id)
+                userMapper.toResponseDto(userService.getUserById(id)
                 )
         );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        userServiceImpl.deleteUser(id);
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.ok(
+                AppConstants.USER_DELETED_SUCCESSFULLY
+        );
     }
 
     @PutMapping("/{id}")
@@ -64,12 +67,11 @@ public class UserController {
             @PathVariable Long id
     )
     {
-        User user = userServiceImpl.updateUser(userRequestDto, id);
+        User user = userService.updateUser(userRequestDto, id);
         UserResponseDto userResponseDto = userMapper.toResponseDto(user);
         return ResponseEntity.ok(userResponseDto);
 
     }
-
 
 
 }

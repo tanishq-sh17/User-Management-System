@@ -2,9 +2,6 @@ package com.springtan.service;
 
 import com.springtan.dto.UserRequestDto;
 import com.springtan.entity.User;
-import com.springtan.exception.UserNotFoundException;
-import com.springtan.util.AppConstants;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

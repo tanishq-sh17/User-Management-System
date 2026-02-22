@@ -1,31 +1,21 @@
 package com.springtan.dto;
 
-import com.springtan.entity.Contact;
 import com.springtan.util.AppConstants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-import java.util.List;
-
-public record UserRequestDto(
-
+public record ContactRequestDto(
         @NotBlank(message = AppConstants.BLANK_NAME_FIELD)
         String name,
+
+        @NotBlank(message = AppConstants.BLANK_PHONE_NUMBER_FIELD)
+        String phoneNumber,
 
         @Email(
                 message = AppConstants.INVALID_EMAIL,
                 regexp = AppConstants.VALID_EMAIL_REGEX
         )
-        String email,
+        String email
 
-        String about,
-
-        @NotBlank(message = AppConstants.BLANK_PASSWORD_FIELD)
-        @Size(min = 8, max = 20)
-        String password,
-
-        List<Contact> contacts
-)
-{
+) {
 }
