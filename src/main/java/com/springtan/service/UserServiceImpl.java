@@ -7,7 +7,9 @@ import com.springtan.exception.UserNotFoundException;
 import com.springtan.mapper.UserMapper;
 import com.springtan.repository.UserRepository;
 import com.springtan.util.AppConstants;
+import com.springtan.util.Role;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +21,25 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            UserMapper userMapper,
+            PasswordEncoder passwordEncoder
+    )
+    {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public UserResponseDto saveUser(UserRequestDto userRequestDto){
         User user = userMapper.toEntity(userRequestDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
         return userMapper.toResponseDto(userRepository.save(user));
     }
 
@@ -50,6 +61,28 @@ public class UserServiceImpl implements UserService {
                         return new UserNotFoundException(
                                 AppConstants.USER_NOT_FOUND);
                 });
+    }
+
+    @Override
+    public UserResponseDto getUserByName(String name) {
+        User user = userRepository.findUserByName(name)
+                .orElseThrow(() -> {
+                    log.error("User not found with name={}", name);
+                    return new UserNotFoundException(
+                            AppConstants.USER_NOT_FOUND);
+                });
+        return userMapper.toResponseDto(user);
+    }
+
+    @Override
+    public UserResponseDto getUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("User not found with email={}", email);
+                    return new UserNotFoundException(
+                            AppConstants.USER_NOT_FOUND);
+                });
+        return userMapper.toResponseDto(user);
     }
 
     @Override

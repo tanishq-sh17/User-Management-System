@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contacts")
+@RequestMapping("/user/{userId}/contacts")
 public class ContactController {
 
     private final ContactService contactService;
@@ -21,7 +21,7 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    @PostMapping("/users/{userId}/contacts")
+    @PostMapping
     public ResponseEntity<ContactResponseDto> addContact(
             @PathVariable Long userId,
             @Valid @RequestBody ContactRequestDto contactRequestDto
@@ -33,10 +33,10 @@ public class ContactController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ContactResponseDto>> getAllContacts(){
+    public ResponseEntity<List<ContactResponseDto>> getAllContacts(@PathVariable Long userId){
         List<ContactResponseDto> contactResponseDtoList
                 = contactService
-                    .getAllContacts()
+                    .getAllContacts(userId)
                     .stream()
                     .toList();
         return ResponseEntity.ok(contactResponseDtoList);

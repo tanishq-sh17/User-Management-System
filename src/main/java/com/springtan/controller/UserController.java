@@ -57,7 +57,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> updateUser(
-            @RequestBody UserRequestDto userRequestDto,
+            @Valid @RequestBody UserRequestDto userRequestDto,
             @PathVariable Long id
     )
     {

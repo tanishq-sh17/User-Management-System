@@ -10,7 +10,7 @@ public interface ContactService {
 
     ContactResponseDto saveContact(Long userId, ContactRequestDto contactRequestDto);
 
-    List<ContactResponseDto> getAllContacts();
+    List<ContactResponseDto> getAllContacts(Long userId);
 
     ContactResponseDto getContactById(Long id);
 

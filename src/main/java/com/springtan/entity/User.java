@@ -1,11 +1,11 @@
 package com.springtan.entity;
 
+import com.springtan.util.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,9 @@ public class User {
     private String about;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(
             mappedBy = "user",

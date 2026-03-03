@@ -13,6 +13,10 @@ public interface UserService {
 
     UserResponseDto getUserById(Long id);
 
+    UserResponseDto getUserByName(String name);
+
+    UserResponseDto getUserByEmail(String email);
+
     void deleteUser(Long id);
 
     UserResponseDto updateUser(UserRequestDto userRequestDto, Long id);

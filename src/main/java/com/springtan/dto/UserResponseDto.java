@@ -9,6 +9,7 @@ public record UserResponseDto(
         String name,
         String email,
         String about,
+        String role,
         List<ContactResponseDto> contacts
 )
 {

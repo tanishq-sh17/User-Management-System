@@ -25,6 +25,8 @@ public record UserRequestDto(
         @Size(min = 8, max = 20)
         String password,
 
+        String role,
+
         List<Contact> contacts
 )
 {

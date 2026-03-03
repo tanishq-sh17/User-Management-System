@@ -50,8 +50,14 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<ContactResponseDto> getAllContacts() {
-        return contactRepository.findAll()
+    public List<ContactResponseDto> getAllContacts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("User not found with userId={}", userId);
+                    return new UserNotFoundException(AppConstants.USER_NOT_FOUND);
+                });
+
+        return user.getContacts()
                 .stream()
                 .map(contactMapper::toResposeDto)
                 .toList();

@@ -18,6 +18,11 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
 
+#  security:
+#    user:
+#      name: admin
+#      password: admin123
+
   output:
     ansi:
       enabled: ALWAYS
